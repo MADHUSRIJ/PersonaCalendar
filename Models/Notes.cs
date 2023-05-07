@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonaCalendar.Models
 
@@ -14,6 +15,14 @@ namespace PersonaCalendar.Models
         [Required]
         public string? NotesBody { get; set;}
 
-        public virtual ICollection<UserNotes>? UserNotes { get; set; }
+        [Required]
+        public string? Access { get; set; }
+
+        [Required]
+        [ForeignKey("Users")]
+        public int UserId { get; set; }
+
+        public virtual Users? Users { get; set; }
+
     }
 }

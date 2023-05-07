@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonaCalendar.Models
 {
@@ -26,11 +27,19 @@ namespace PersonaCalendar.Models
         public string? EndTime { get; set;}
 
         [Required]
-        public string? EventOccurance { get; set;}
+        public string? Location { get; set; }
+
+        [Required]
+        public string? Access { get; set; }
 
         [Required]
         public bool? EventNotification { get; set;}
 
-        public virtual ICollection<UserEvents>? UserEvents { get; set; }
+
+        [Required]
+        [ForeignKey("Users")]
+        public int UserId { get; set; }
+
+        public virtual Users? Users { get; set; }
     }
 }

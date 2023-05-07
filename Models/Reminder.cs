@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonaCalendar.Models
 
@@ -20,8 +21,15 @@ namespace PersonaCalendar.Models
         [Required]
         public string? ReminderOccurence { get; set; }
 
-       
-        public virtual ICollection<UserReminders>? UserReminders { get; set; }
+        [Required]
+        public string? Access { get; set; }
+
+        [Required]
+        [ForeignKey("Users")]
+        public int UserId { get; set; }
+
+
+        public virtual Users? Users { get; set; }
 
     }
 }

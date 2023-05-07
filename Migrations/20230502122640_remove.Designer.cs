@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonaCalendar.Data;
 
@@ -11,9 +12,11 @@ using PersonaCalendar.Data;
 namespace PersonaCalendar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230502122640_remove")]
+    partial class remove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,11 +53,11 @@ namespace PersonaCalendar.Migrations
                         .IsRequired()
                         .HasColumnType("bit");
 
-                    b.Property<string>("EventTitle")
+                    b.Property<string>("EventOccurance")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("EventTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -69,9 +72,12 @@ namespace PersonaCalendar.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("EventId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersUserId");
 
                     b.ToTable("Events");
                 });
@@ -99,9 +105,12 @@ namespace PersonaCalendar.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("NotesId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersUserId");
 
                     b.ToTable("Notes");
                 });
@@ -137,9 +146,12 @@ namespace PersonaCalendar.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("ReminderId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersUserId");
 
                     b.ToTable("Reminders");
                 });
@@ -179,9 +191,12 @@ namespace PersonaCalendar.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("TaskId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersUserId");
 
                     b.ToTable("Tasks");
                 });
@@ -217,46 +232,41 @@ namespace PersonaCalendar.Migrations
 
             modelBuilder.Entity("PersonaCalendar.Models.Events", b =>
                 {
-                    b.HasOne("PersonaCalendar.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
+                    b.HasOne("PersonaCalendar.Models.Users", null)
+                        .WithMany("UserEvents")
+                        .HasForeignKey("UsersUserId");
                 });
 
             modelBuilder.Entity("PersonaCalendar.Models.Notes", b =>
                 {
-                    b.HasOne("PersonaCalendar.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
+                    b.HasOne("PersonaCalendar.Models.Users", null)
+                        .WithMany("UserNotes")
+                        .HasForeignKey("UsersUserId");
                 });
 
             modelBuilder.Entity("PersonaCalendar.Models.Reminder", b =>
                 {
-                    b.HasOne("PersonaCalendar.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
+                    b.HasOne("PersonaCalendar.Models.Users", null)
+                        .WithMany("UserReminders")
+                        .HasForeignKey("UsersUserId");
                 });
 
             modelBuilder.Entity("PersonaCalendar.Models.Tasks", b =>
                 {
-                    b.HasOne("PersonaCalendar.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("PersonaCalendar.Models.Users", null)
+                        .WithMany("UserTasks")
+                        .HasForeignKey("UsersUserId");
+                });
 
-                    b.Navigation("Users");
+            modelBuilder.Entity("PersonaCalendar.Models.Users", b =>
+                {
+                    b.Navigation("UserEvents");
+
+                    b.Navigation("UserNotes");
+
+                    b.Navigation("UserReminders");
+
+                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

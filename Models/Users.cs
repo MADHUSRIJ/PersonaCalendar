@@ -21,10 +21,5 @@ namespace PersonaCalendar.Models
         [Required]
         public string? HashedPassword { get; set; }
 
-        public virtual ICollection<UserEvents>? UserEvents { get; set; }
-        public virtual ICollection<UserTasks>? UserTasks { get; set; }
-        public virtual ICollection<UserNotes>? UserNotes { get; set; }
-        public virtual ICollection<UserReminders>? UserReminders { get; set; }
-
     }
 }

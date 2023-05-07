@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +31,8 @@ namespace PersonaCalendar.Controllers
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .ToListAsync();
         }
 
         // GET: api/Users/5
@@ -40,7 +43,10 @@ namespace PersonaCalendar.Controllers
           {
               return NotFound();
           }
-            var users = await _context.Users.FindAsync(id);
+            
+
+            var users = await _context.Users
+                .FirstOrDefaultAsync(e => e.UserId == id);
 
             if (users == null)
             {
@@ -48,6 +54,75 @@ namespace PersonaCalendar.Controllers
             }
 
             return users;
+        }
+
+        // GET: api/Users/5/notes
+
+        [HttpGet("{id}/notes")]
+        public async Task<ActionResult<IEnumerable<Notes>>> GetUserNotes(int id)
+        {
+            var notes = await _context.Notes
+                .Where(e => e.UserId == id)
+                .ToListAsync();
+
+            if (notes == null)
+            {
+                return NotFound();
+            }
+
+            return notes;
+        }
+
+
+        // GET: api/Users/5/events
+
+        [HttpGet("{id}/events")]
+        public async Task<ActionResult<IEnumerable<Events>>> GetUserEvents(int id)
+        {
+            var events = await _context.Events
+                .Where(e => e.UserId == id)
+                .ToListAsync();
+
+            if (events == null)
+            {
+                return NotFound();
+            }
+
+            return events;
+        }
+
+        // GET: api/Users/5/tasks
+
+        [HttpGet("{id}/tasks")]
+        public async Task<ActionResult<IEnumerable<Tasks>>> GetUserTasks(int id)
+        {
+            var tasks = await _context.Tasks
+                .Where(e => e.UserId == id)
+                .ToListAsync();
+
+            if (tasks == null)
+            {
+                return NotFound();
+            }
+
+            return tasks;
+        }
+
+        // GET: api/Users/5/reminder
+
+        [HttpGet("{id}/reminder")]
+        public async Task<ActionResult<IEnumerable<Reminder>>> GetUserReminder(int id)
+        {
+            var reminders = await _context.Reminders
+                .Where(e => e.UserId == id)
+                .ToListAsync();
+
+            if (reminders == null)
+            {
+                return NotFound();
+            }
+
+            return reminders;
         }
 
         // PUT: api/Users/5
